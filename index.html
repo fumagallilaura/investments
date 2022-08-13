@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Document</title>
+</head>
+<body>
+  <main>
+    <section>
+      <forms>
+        <label>
+          Quanto quer investir?
+          <input type='number' id='invest' />
+        </label>
+        <button id='reload'>Calcular</button>
+      </forms>
+      <p id='betterInvestments'>Melhores opções  que maximizam o retorno total para essa valor:</p>
+      <table>
+        <caption>Investimentos</caption>
+        <thead>
+          <tr>
+            <th>Opção</th>
+            <th>Descrição</th>
+            <th>Custo do investimento (R$)</th>
+            <th>Retorno esperado (R$)</th>
+          </tr>
+        </thead>
+        <tbody id='table-body'>
+        </tbody>
+      </table>
+    </section>
+    <aside>
+      <p>
+        Simulação de investimentos que maximizam o retorno total caso invista <strong>R$1.000.000</strong>
+      </p>
+      <div id='betterOptions'></div>
+      <div id='simulationFor1million'><div/>
+    </aside>
+  </main>
+</body>
+<script src="./script.js"></script>
+</html>
+
