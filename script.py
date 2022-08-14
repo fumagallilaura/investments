@@ -129,5 +129,5 @@ def whereInvest(inputValue):
     
     return {'compensates_more': compensates_more, 'purchased_investments': purchased_investments}
 
-test = whereInvest(1000000)
-print(test)
+result = whereInvest(1000000)
+print(result)
