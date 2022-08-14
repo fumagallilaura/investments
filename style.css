@@ -13,6 +13,8 @@ tr {
 
 main {
   display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #focus {
@@ -24,14 +26,18 @@ aside {
   font-size: large;
 }
 
-header {
+header, footer {
   margin-bottom: 1em;
   display: flex;
   justify-content: center;
 }
 
-#pythonCode {
+#pythonCode, #jsCode {
   font-size: xx-large;
   text-align: center;
   margin: 2rem;
+}
+
+spam {
+  color: red;
 }
