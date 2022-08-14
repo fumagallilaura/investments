@@ -2,17 +2,17 @@
 
 // SE tivéssemos um BackEnd:
 // Considerando que, hipotéticamente, este é um projeto NodeJS com as dependências mysql2 e dotenv devidamente instaladas (já com o arquivo .env com as variáveis de ambiente setadas e configuradas) com a tabela disponibilizada através de um banco de dados SQL
-// const mysql = require('mysql2/promise');
-// require('dotenv').config();
+// const mysql = require('mysql2/promise')
+// require('dotenv').config()
 
 // const conn = mysql.createPool({
 //   host: process.env.MYSQL_HOST,
 //   user: process.env.MYSQL_USER,
 //   password: process.env.MYSQL_PASSWORD,
-// });
+// })
 
-// const query = 'SELECT * FROM database.table_vigente';
-// const [result] = await conn.execute(query);
+// const query = 'SELECT * FROM database.table_vigente'
+// const [result] = await conn.execute(query)
 
 // Expectativa de retorno
 const resultMock = [
@@ -67,81 +67,81 @@ const resultMock = [
 ]
 
 // Supondo que a pessoa usuária inseriu em um input o capital inicial
-// const inputValue = '1000000';
+// const inputValue = '1000000'
 
 // Helpers functions
 const isInvestmentSelected = (selectedsArray, compareArray, n1, n2) => {
   if (selectedsArray.includes(n1) && compareArray.includes(n2)) {
-    const i = compareArray.indexOf(n2);
-    compareArray.splice(i, 1);
-    return compareArray;
+    const i = compareArray.indexOf(n2)
+    compareArray.splice(i, 1)
+    return compareArray
   }
 }
 
 // Lógica do service
 function whereInvest(inputValue) {
-  let investment = Number(inputValue);
-  let arrayCompare = [...resultMock];
-  const purchasedInvestments = [];
-  let index;
-  let opitionCompare = '1';
+  let investment = Number(inputValue)
+  let arrayCompare = [...resultMock]
+  const purchasedInvestments = []
+  let index
+  let opitionCompare = '1'
 
-  const investment1 = resultMock[0];
-  const investment5 = resultMock[4];
-  const investment2 = resultMock[1];
-  const investment4 = resultMock[4];
+  const investment1 = resultMock[0]
+  const investment5 = resultMock[4]
+  const investment2 = resultMock[1]
+  const investment4 = resultMock[4]
 
   while (investment > 0 && index !== -1) {
-    let numberCompare = Number(arrayCompare[0].custoDoInvestimento) - Number(arrayCompare[0].retornoEsperado);
-    for (let i =  1; i < arrayCompare.length; i += 1) {
-      const differenceExpensesEarned = arrayCompare[i].custoDoInvestimento - arrayCompare[i].retornoEsperado;
+    let numberCompare = Number(arrayCompare[0].custoDoInvestimento) - Number(arrayCompare[0].retornoEsperado)
+    for (let i =  1 i < arrayCompare.length i += 1) {
+      const differenceExpensesEarned = arrayCompare[i].custoDoInvestimento - arrayCompare[i].retornoEsperado
       if (numberCompare > differenceExpensesEarned) {
-        index = i;
-        opitionCompare = arrayCompare[i].opcao;
-        numberCompare = differenceExpensesEarned;
+        index = i
+        opitionCompare = arrayCompare[i].opcao
+        numberCompare = differenceExpensesEarned
       }
     }
-    if (index === -1) break;
-    investment -= arrayCompare[index].custoDoInvestimento;
-    if (investment < 0) break;
-    purchasedInvestments.push(arrayCompare[index]);
-    arrayCompare.splice(index, 1);
+    if (index === -1) break
+    investment -= arrayCompare[index].custoDoInvestimento
+    if (investment < 0) break
+    purchasedInvestments.push(arrayCompare[index])
+    arrayCompare.splice(index, 1)
 
-    for (let i = 0; i < arrayCompare.length; i += 1) {
+    for (let i = 0 i < arrayCompare.length i += 1) {
       if (Number(arrayCompare[i].custoDoInvestimento) > Number(investment)) {
-        arrayCompare.splice(i, 1);
-        i -= 1;
-      };
+        arrayCompare.splice(i, 1)
+        i -= 1
+      }
     }
 
     // if (purchasedInvestments.includes(investment1) && arrayCompare.includes(investment5)) {
-    //   const i = arrayCompare.indexOf(investment5);
-    //   arrayCompare.splice(i, 1);
+    //   const i = arrayCompare.indexOf(investment5)
+    //   arrayCompare.splice(i, 1)
     // }
     // Rafatorando:
-    arrayCompare = isInvestmentSelected(purchasedInvestments, arrayCompare, investment1, investment5) || arrayCompare;
+    arrayCompare = isInvestmentSelected(purchasedInvestments, arrayCompare, investment1, investment5) || arrayCompare
 
     // if (purchasedInvestments.includes(investment2) && arrayCompare.includes(investment4)) {
-    //   const i = arrayCompare.indexOf(investment4);
-    //   arrayCompare.splice(i, 1);
+    //   const i = arrayCompare.indexOf(investment4)
+    //   arrayCompare.splice(i, 1)
     // }
     // Rafatorando:
-    arrayCompare = isInvestmentSelected(purchasedInvestments, arrayCompare, investment2, investment4) || arrayCompare;
+    arrayCompare = isInvestmentSelected(purchasedInvestments, arrayCompare, investment2, investment4) || arrayCompare
 
-    index = arrayCompare.length > 0 ? 0 : -1;
+    index = arrayCompare.length > 0 ? 0 : -1
   }
 
-  const compensatesMore = [];
-  for (let i = 0; i < purchasedInvestments.length; i += 1) {
-    compensatesMore.push(purchasedInvestments[i].opcao);
+  const compensatesMore = []
+  for (let i = 0 i < purchasedInvestments.length i += 1) {
+    compensatesMore.push(purchasedInvestments[i].opcao)
   }
 
-  // console.log(`Melhores opções: ${compensatesMore}`);
-  // console.log('Investimentos: ', purchasedInvestments);
+  // console.log(`Melhores opções: ${compensatesMore}`)
+  // console.log('Investimentos: ', purchasedInvestments)
   return {compensatesMore, purchasedInvestments}
 }
 // Montando a tabela para visualização
-const tableBody = document.getElementById('table-body');
+const tableBody = document.getElementById('table-body')
 resultTable = resultMock.map((investment) => (
   `
     <tr>
@@ -151,12 +151,12 @@ resultTable = resultMock.map((investment) => (
       <td>${investment.retornoEsperado}</td>
     </tr>
   `
-));
+))
 tableBody.innerHTML = resultTable.join('')
 
 // Opções dinâmicas de investimento
-const userInput = document.getElementById('invest');
-const betterOptionsForUser = document.querySelector('#betterInvestments');
+const userInput = document.getElementById('invest')
+const betterOptionsForUser = document.querySelector('#betterInvestments')
 const t = whereInvest(Number(userInput.value)).compensatesMore
 betterOptionsForUser.textContent = `
   Melhores opções  que maximizam o retorno total para essa valor: ${t}
@@ -164,34 +164,34 @@ betterOptionsForUser.textContent = `
 console.log(t)
 
 // Com R$1.000.000
-const { compensatesMore, purchasedInvestments } = whereInvest(1000000);
+const { compensatesMore, purchasedInvestments } = whereInvest(1000000)
 const betterOptions = document.getElementById('betterOptions')
 betterOptions.innerHTML = `
   Opções: ${compensatesMore.map((option) => option)}
-`;
+`
 
 const simulationFor1million = document.getElementById('simulationFor1million')
 simulationFor1million.innerHTML = `
   Investimentos: ${purchasedInvestments.map((option) => ` ${option.descricao}`)}
-`;
+`
 
-const calculate = document.querySelector("#reload");
+const calculate = document.querySelector("#reload")
 
 // Event listeners for reload
 calculate.addEventListener("click", () => {
   // Opções dinâmicas de investimento
-  const userInput = document.getElementById('invest');
-  const betterOptionsForUser = document.querySelector('#betterInvestments');
+  const userInput = document.getElementById('invest')
+  const betterOptionsForUser = document.querySelector('#betterInvestments')
   const opitionsinp = whereInvest(Number(userInput.value)).compensatesMore
   betterOptionsForUser.textContent = `
     Melhores opções  que maximizam o retorno total para essa valor: ${opitionsinp}
   `
-});
+})
 
-const pythonCode = document.querySelector("#pythonCode");
-pythonCode.addEventListener('click', () =>  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.py');
+const pythonCode = document.querySelector("#pythonCode")
+pythonCode.addEventListener('click', () =>  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.py')
 
-const jsCode = document.querySelector("#jsCode");
-pythonCode.addEventListener('click', () =>  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.js');
+const jsCode = document.querySelector("#jsCode")
+pythonCode.addEventListener('click', () =>  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.js')
 
-module.exports = whereInvest;
+module.exports = whereInvest
