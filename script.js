@@ -94,41 +94,41 @@ const investment4 = resultMock[4];
 while (investment > 0 && index !== -1) {
   let numberCompare = Number(arrayCompare[0].custoDoInvestimento) - Number(arrayCompare[0].retornoEsperado);
   for (let i =  1; i < arrayCompare.length; i += 1) {
-  const differenceExpensesEarned = arrayCompare[i].custoDoInvestimento - arrayCompare[i].retornoEsperado;
-  if (numberCompare > differenceExpensesEarned) {
-    index = i;
-    opitionCompare = arrayCompare[i].opcao;
-    numberCompare = differenceExpensesEarned;
+    const differenceExpensesEarned = arrayCompare[i].custoDoInvestimento - arrayCompare[i].retornoEsperado;
+    if (numberCompare > differenceExpensesEarned) {
+      index = i;
+      opitionCompare = arrayCompare[i].opcao;
+      numberCompare = differenceExpensesEarned;
+    }
   }
-}
-if (index === -1) break;
-investment -= arrayCompare[index].custoDoInvestimento;
-if (investment < 0) break;
-purchasedInvestments.push(arrayCompare[index]);
-arrayCompare.splice(index, 1);
+  if (index === -1) break;
+  investment -= arrayCompare[index].custoDoInvestimento;
+  if (investment < 0) break;
+  purchasedInvestments.push(arrayCompare[index]);
+  arrayCompare.splice(index, 1);
 
-for (let i = 0; i < arrayCompare.length; i += 1) {
-  if (Number(arrayCompare[i].custoDoInvestimento) > Number(investment)) {
-    arrayCompare.splice(i, 1);
-    i -= 1;
-  };
-}
+  for (let i = 0; i < arrayCompare.length; i += 1) {
+    if (Number(arrayCompare[i].custoDoInvestimento) > Number(investment)) {
+      arrayCompare.splice(i, 1);
+      i -= 1;
+    };
+  }
 
-// if (purchasedInvestments.includes(investment1) && arrayCompare.includes(investment5)) {
-//   const i = arrayCompare.indexOf(investment5);
-//   arrayCompare.splice(i, 1);
-// }
-// Rafatorando:
-arrayCompare = isInvestmentSelected(purchasedInvestments, arrayCompare, investment1, investment5) || arrayCompare;
+  // if (purchasedInvestments.includes(investment1) && arrayCompare.includes(investment5)) {
+  //   const i = arrayCompare.indexOf(investment5);
+  //   arrayCompare.splice(i, 1);
+  // }
+  // Rafatorando:
+  arrayCompare = isInvestmentSelected(purchasedInvestments, arrayCompare, investment1, investment5) || arrayCompare;
 
-// if (purchasedInvestments.includes(investment2) && arrayCompare.includes(investment4)) {
-//   const i = arrayCompare.indexOf(investment4);
-//   arrayCompare.splice(i, 1);
-// }
-// Rafatorando:
-arrayCompare = isInvestmentSelected(purchasedInvestments, arrayCompare, investment2, investment4) || arrayCompare;
+  // if (purchasedInvestments.includes(investment2) && arrayCompare.includes(investment4)) {
+  //   const i = arrayCompare.indexOf(investment4);
+  //   arrayCompare.splice(i, 1);
+  // }
+  // Rafatorando:
+  arrayCompare = isInvestmentSelected(purchasedInvestments, arrayCompare, investment2, investment4) || arrayCompare;
 
-index = arrayCompare.length > 0 ? 0 : -1;
+  index = arrayCompare.length > 0 ? 0 : -1;
 }
 
 const compensatesMore = [];
@@ -171,18 +171,21 @@ betterOptions.innerHTML = `
 
 const simulationFor1million = document.getElementById('simulationFor1million')
 simulationFor1million.innerHTML = `
-  Investimentos: ${purchasedInvestments.map((option) => ` ${option.descricao}`)}`;
+  Investimentos: ${purchasedInvestments.map((option) => ` ${option.descricao}`)}
+`;
 
-  const reloadButton = document.querySelector("#reload");
+const calculate = document.querySelector("#reload");
 
-  // Event listeners for reload
-  reloadButton.addEventListener("click", () => {
-    // Opções dinâmicas de investimento
-    const userInput = document.getElementById('invest');
-    const betterOptionsForUser = document.querySelector('#betterInvestments');
-    const t = wherInvest(Number(userInput.value)).compensatesMore
-    betterOptionsForUser.textContent = `
-      Melhores opções  que maximizam o retorno total para essa valor: ${t}
-    `
-    console.log(t)
-  }, false);
+// Event listeners for reload
+calculate.addEventListener("click", () => {
+  // Opções dinâmicas de investimento
+  const userInput = document.getElementById('invest');
+  const betterOptionsForUser = document.querySelector('#betterInvestments');
+  const opitionsinp = wherInvest(Number(userInput.value)).compensatesMore
+  betterOptionsForUser.textContent = `
+    Melhores opções  que maximizam o retorno total para essa valor: ${opitionsinp}
+  `
+});
+
+const pythonCode = document.querySelector("#pythonCode");
+pythonCode.addEventListener('click', () =>  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.py')

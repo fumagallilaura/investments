@@ -14,3 +14,24 @@ tr {
 main {
   display: flex;
 }
+
+#focus {
+  font-size: x-large;
+  text-align: center;
+}
+
+aside {
+  font-size: large;
+}
+
+header {
+  margin-bottom: 1em;
+  display: flex;
+  justify-content: center;
+}
+
+#pythonCode {
+  font-size: xx-large;
+  text-align: center;
+  margin: 2rem;
+}
