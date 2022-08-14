@@ -142,7 +142,7 @@ for (let i = 0; i < purchasedInvestments.length; i += 1) {
 }
 // Montando a tabela para visualização
 const tableBody = document.getElementById('table-body');
-tableBody.innerHTML = resultMock.map((investment) => (
+resultTable = resultMock.map((investment) => (
   `
     <tr>
       <td>${investment.opcao}</td>
@@ -151,7 +151,8 @@ tableBody.innerHTML = resultMock.map((investment) => (
       <td>${investment.retornoEsperado}</td>
     </tr>
   `
-))
+));
+tableBody.innerHTML = resultTable.join('')
 
 // Opções dinâmicas de investimento
 const userInput = document.getElementById('invest');
@@ -188,4 +189,7 @@ calculate.addEventListener("click", () => {
 });
 
 const pythonCode = document.querySelector("#pythonCode");
-pythonCode.addEventListener('click', () =>  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.py')
+pythonCode.addEventListener('click', () =>  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.py');
+
+const jsCode = document.querySelector("#jsCode");
+pythonCode.addEventListener('click', () =>  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.js');
