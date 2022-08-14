@@ -1,20 +1,3 @@
-// Código feito em arquivo único apenas por facilitação de visualização da linha de raciocínio
-
-// SE tivéssemos um BackEnd:
-// Considerando que, hipotéticamente, este é um projeto NodeJS com as dependências mysql2 e dotenv devidamente instaladas (já com o arquivo .env com as variáveis de ambiente setadas e configuradas) com a tabela disponibilizada através de um banco de dados SQL
-// const mysql = require('mysql2/promise')
-// require('dotenv').config()
-
-// const conn = mysql.createPool({
-//   host: process.env.MYSQL_HOST,
-//   user: process.env.MYSQL_USER,
-//   password: process.env.MYSQL_PASSWORD,
-// })
-
-// const query = 'SELECT * FROM database.table_vigente'
-// const [result] = await conn.execute(query)
-
-// Expectativa de retorno
 const resultMock = [
   {
     opcao: '1',
@@ -135,68 +118,8 @@ function whereInvest (inputValue) {
     compensatesMore.push(purchasedInvestments[i].opcao)
   }
 
-  console.log(`Melhores opções: ${compensatesMore}`)
-  console.log('Investimentos: ', purchasedInvestments)
+  // console.log(`Melhores opções: ${compensatesMore}`)
+  // console.log('Investimentos: ', purchasedInvestments)
   return { compensatesMore, purchasedInvestments }
 }
-// whereInvest(50000)
-// Montando a tabela para visualização
-const tableBody = document.getElementById('table-body')
-const resultTable = resultMock.map((investment) => (
-  `
-    <tr>
-      <td>${investment.opcao}</td>
-      <td>${investment.descricao}</td>
-      <td>${investment.custoDoInvestimento}</td>
-      <td>${investment.retornoEsperado}</td>
-    </tr>
-  `
-))
-tableBody.innerHTML = resultTable.join('')
-
-// Opções dinâmicas de investimento
-const userInput = document.getElementById('invest')
-const betterOptionsForUser = document.querySelector('#betterInvestments')
-const t = whereInvest(Number(userInput.value)).compensatesMore
-betterOptionsForUser.textContent = `
-  Melhores opções  que maximizam o retorno total para essa valor: ${t}
-`
-console.log(t)
-
-// Com R$1.000.000
-const { compensatesMore, purchasedInvestments } = whereInvest(1000000)
-const betterOptions = document.getElementById('betterOptions')
-betterOptions.innerHTML = `
-  Opções: ${compensatesMore.map((option) => option)}
-`
-
-const simulationFor1million = document.getElementById('simulationFor1million')
-simulationFor1million.innerHTML = `
-  Investimentos: ${purchasedInvestments.map((option) => ` ${option.descricao}`)}
-`
-
-const calculate = document.querySelector('#reload')
-
-// Event listeners for reload
-calculate.addEventListener('click', () => {
-  // Opções dinâmicas de investimento
-  const userInput = document.getElementById('invest')
-  const betterOptionsForUser = document.querySelector('#betterInvestments')
-  console.log('e', userInput.value)
-  const opitionsinp = whereInvest(Number(userInput.value)).compensatesMore
-  betterOptionsForUser.textContent = `
-    Melhores opções  que maximizam o retorno total para essa valor: ${opitionsinp}
-  `
-})
-
-const pythonCode = document.querySelector('#pythonCode')
-pythonCode.addEventListener('click', function () {
-  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.py'
-})
-
-const jsCode = document.querySelector('#jsCode')
-jsCode.addEventListener('click', function () {
-  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.js'
-})
-
-module.exports = whereInvest
+console.log(whereInvest(50000))
