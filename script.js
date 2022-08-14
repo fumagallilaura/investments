@@ -63,7 +63,7 @@ const resultMock = [
     descricao: 'Ampliação da estrutura de carga rodoviária',
     custoDoInvestimento: '440000',
     retornoEsperado: '190000'
-  },
+  }
 ]
 
 // Supondo que a pessoa usuária inseriu em um input o capital inicial
@@ -79,12 +79,11 @@ const isInvestmentSelected = (selectedsArray, compareArray, n1, n2) => {
 }
 
 // Lógica do service
-function whereInvest(inputValue) {
+function whereInvest (inputValue) {
   let investment = Number(inputValue)
   let arrayCompare = [...resultMock]
   const purchasedInvestments = []
   let index
-  let opitionCompare = '1'
 
   const investment1 = resultMock[0]
   const investment5 = resultMock[4]
@@ -93,11 +92,10 @@ function whereInvest(inputValue) {
 
   while (investment > 0 && index !== -1) {
     let numberCompare = Number(arrayCompare[0].custoDoInvestimento) - Number(arrayCompare[0].retornoEsperado)
-    for (let i =  1 i < arrayCompare.length i += 1) {
+    for (let i = 1; i < arrayCompare.length; i += 1) {
       const differenceExpensesEarned = arrayCompare[i].custoDoInvestimento - arrayCompare[i].retornoEsperado
       if (numberCompare > differenceExpensesEarned) {
         index = i
-        opitionCompare = arrayCompare[i].opcao
         numberCompare = differenceExpensesEarned
       }
     }
@@ -107,7 +105,7 @@ function whereInvest(inputValue) {
     purchasedInvestments.push(arrayCompare[index])
     arrayCompare.splice(index, 1)
 
-    for (let i = 0 i < arrayCompare.length i += 1) {
+    for (let i = 0; i < arrayCompare.length; i += 1) {
       if (Number(arrayCompare[i].custoDoInvestimento) > Number(investment)) {
         arrayCompare.splice(i, 1)
         i -= 1
@@ -132,17 +130,18 @@ function whereInvest(inputValue) {
   }
 
   const compensatesMore = []
-  for (let i = 0 i < purchasedInvestments.length i += 1) {
+  for (let i = 0; i < purchasedInvestments.length; i += 1) {
     compensatesMore.push(purchasedInvestments[i].opcao)
   }
 
   // console.log(`Melhores opções: ${compensatesMore}`)
   // console.log('Investimentos: ', purchasedInvestments)
-  return {compensatesMore, purchasedInvestments}
+  return { compensatesMore, purchasedInvestments }
 }
+whereInvest(1000000)
 // Montando a tabela para visualização
 const tableBody = document.getElementById('table-body')
-resultTable = resultMock.map((investment) => (
+const resultTable = resultMock.map((investment) => (
   `
     <tr>
       <td>${investment.opcao}</td>
@@ -175,10 +174,10 @@ simulationFor1million.innerHTML = `
   Investimentos: ${purchasedInvestments.map((option) => ` ${option.descricao}`)}
 `
 
-const calculate = document.querySelector("#reload")
+const calculate = document.querySelector('#reload')
 
 // Event listeners for reload
-calculate.addEventListener("click", () => {
+calculate.addEventListener('click', () => {
   // Opções dinâmicas de investimento
   const userInput = document.getElementById('invest')
   const betterOptionsForUser = document.querySelector('#betterInvestments')
@@ -188,10 +187,14 @@ calculate.addEventListener("click", () => {
   `
 })
 
-const pythonCode = document.querySelector("#pythonCode")
-pythonCode.addEventListener('click', () =>  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.py')
+const pythonCode = document.querySelector('#pythonCode')
+pythonCode.addEventListener('click', function () {
+  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.py'
+})
 
-const jsCode = document.querySelector("#jsCode")
-pythonCode.addEventListener('click', () =>  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.js')
+const jsCode = document.querySelector('#jsCode')
+jsCode.addEventListener('click', function () {
+  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.js'
+})
 
 module.exports = whereInvest
