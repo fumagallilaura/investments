@@ -107,7 +107,7 @@ function whereInvest (inputValue) {
         numberCompare = differenceExpensesEarned
       }
     }
-    if (index === -1) break
+    if (index === -1 || arrayCompare.length === 0) break
     investment -= arrayCompare[index].custoDoInvestimento
     if (investment < 0) break
     purchasedInvestments.push(arrayCompare[index])
@@ -139,7 +139,7 @@ function whereInvest (inputValue) {
   console.log('Investimentos: ', purchasedInvestments)
   return { compensatesMore, purchasedInvestments }
 }
-// whereInvest(50000)
+whereInvest(1000000)
 // Montando a tabela para visualização
 const tableBody = document.getElementById('table-body')
 const resultTable = resultMock.map((investment) => (
@@ -191,11 +191,13 @@ calculate.addEventListener('click', () => {
 
 const pythonCode = document.querySelector('#pythonCode')
 pythonCode.addEventListener('click', function () {
+  // eslint-disable-next-line no-undef
   location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.py'
 })
 
 const jsCode = document.querySelector('#jsCode')
 jsCode.addEventListener('click', function () {
+  // eslint-disable-next-line no-undef
   location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.js'
 })
 

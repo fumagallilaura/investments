@@ -1,3 +1,4 @@
+// Expectativa de retorno
 const resultMock = [
   {
     opcao: '1',
@@ -90,7 +91,7 @@ function whereInvest (inputValue) {
         numberCompare = differenceExpensesEarned
       }
     }
-    if (index === -1) break
+    if (index === -1 || arrayCompare.length === 0) break
     investment -= arrayCompare[index].custoDoInvestimento
     if (investment < 0) break
     purchasedInvestments.push(arrayCompare[index])
@@ -118,8 +119,8 @@ function whereInvest (inputValue) {
     compensatesMore.push(purchasedInvestments[i].opcao)
   }
 
-  // console.log(`Melhores opções: ${compensatesMore}`)
-  // console.log('Investimentos: ', purchasedInvestments)
+  console.log(`Melhores opções: ${compensatesMore}`)
+  console.log('Investimentos: ', purchasedInvestments)
   return { compensatesMore, purchasedInvestments }
 }
-console.log(whereInvest(50000))
+whereInvest(50000)
