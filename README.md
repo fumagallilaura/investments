@@ -6,7 +6,7 @@ esperado, considerando que:
 - Se o investimento 1 for selecionado, então o investimento 5 não deve ser;
 - Se o investimento 2 for selecionado, então o investimento 4 também deve ser.
 
-> Obs: está sem um FrontEnd muito elaborado pois o foco aqui é a lógica por trás do algorítimo
+> Obs: FrontEnd não é o foco aqui, mas sim a lógica por trás do algorítimo
 
 <hr>
 
