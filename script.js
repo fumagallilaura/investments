@@ -83,7 +83,7 @@ function whereInvest (inputValue) {
   let investment = Number(inputValue)
   let arrayCompare = [...resultMock]
   const purchasedInvestments = []
-  let index
+  let index = 0
 
   const investment1 = resultMock[0]
   const investment5 = resultMock[4]
@@ -92,18 +92,6 @@ function whereInvest (inputValue) {
 
   while (investment > 0 && index !== -1) {
     let numberCompare = Number(arrayCompare[0].custoDoInvestimento) - Number(arrayCompare[0].retornoEsperado)
-    for (let i = 1; i < arrayCompare.length; i += 1) {
-      const differenceExpensesEarned = arrayCompare[i].custoDoInvestimento - arrayCompare[i].retornoEsperado
-      if (numberCompare > differenceExpensesEarned) {
-        index = i
-        numberCompare = differenceExpensesEarned
-      }
-    }
-    if (index === -1) break
-    investment -= arrayCompare[index].custoDoInvestimento
-    if (investment < 0) break
-    purchasedInvestments.push(arrayCompare[index])
-    arrayCompare.splice(index, 1)
 
     for (let i = 0; i < arrayCompare.length; i += 1) {
       if (Number(arrayCompare[i].custoDoInvestimento) > Number(investment)) {
@@ -111,6 +99,19 @@ function whereInvest (inputValue) {
         i -= 1
       }
     }
+
+    for (let i = 1; i < arrayCompare.length; i += 1) {
+      const differenceExpensesEarned = arrayCompare[i].custoDoInvestimento - arrayCompare[i].retornoEsperado
+      if (numberCompare > differenceExpensesEarned) {
+        index = i
+        numberCompare = differenceExpensesEarned
+      }
+    }
+    if (index === -1 || arrayCompare.length === 0) break
+    investment -= arrayCompare[index].custoDoInvestimento
+    if (investment < 0) break
+    purchasedInvestments.push(arrayCompare[index])
+    arrayCompare.splice(index, 1)
 
     // if (purchasedInvestments.includes(investment1) && arrayCompare.includes(investment5)) {
     //   const i = arrayCompare.indexOf(investment5)
@@ -134,8 +135,8 @@ function whereInvest (inputValue) {
     compensatesMore.push(purchasedInvestments[i].opcao)
   }
 
-  // console.log(`Melhores opções: ${compensatesMore}`)
-  // console.log('Investimentos: ', purchasedInvestments)
+  console.log(`Melhores opções: ${compensatesMore}`)
+  console.log('Investimentos: ', purchasedInvestments)
   return { compensatesMore, purchasedInvestments }
 }
 whereInvest(1000000)
@@ -153,47 +154,59 @@ const resultTable = resultMock.map((investment) => (
 ))
 tableBody.innerHTML = resultTable.join('')
 
-// Opções dinâmicas de investimento
-const userInput = document.getElementById('invest')
-const betterOptionsForUser = document.querySelector('#betterInvestments')
-const t = whereInvest(Number(userInput.value)).compensatesMore
-betterOptionsForUser.textContent = `
-  Melhores opções  que maximizam o retorno total para essa valor: ${t}
-`
-console.log(t)
-
+// // Opções dinâmicas de investimento
+// const userInput = document.getElementById('invest')
+// const betterOptionsForUser = document.querySelector('#betterInvestments')
+// const t = whereInvest(Number(userInput.value)).compensatesMore
+// betterOptionsForUser.textContent = `
+//   Melhores opções  que maximizam o retorno total para essa valor: ${t}
+// `
+// console.log(t)
+// helpper view function
+function view (optionsArr, investimentsArr) {
+  const betterOptions = document.getElementById('betterOptions')
+  betterOptions.innerHTML = `
+    Opções: ${optionsArr.map((option) => option)}
+  `
+  const simulationFor1million = document.getElementById('simulationFor1million')
+  simulationFor1million.innerHTML = `
+    Investimentos: ${investimentsArr.map((option) => ` ${option.descricao}`)}
+  `
+}
 // Com R$1.000.000
 const { compensatesMore, purchasedInvestments } = whereInvest(1000000)
-const betterOptions = document.getElementById('betterOptions')
-betterOptions.innerHTML = `
-  Opções: ${compensatesMore.map((option) => option)}
-`
-
-const simulationFor1million = document.getElementById('simulationFor1million')
-simulationFor1million.innerHTML = `
-  Investimentos: ${purchasedInvestments.map((option) => ` ${option.descricao}`)}
-`
-
+view(compensatesMore, purchasedInvestments)
 const calculate = document.querySelector('#reload')
+const viewInvest = document.querySelector('#focus')
 
 // Event listeners for reload
 calculate.addEventListener('click', () => {
   // Opções dinâmicas de investimento
   const userInput = document.getElementById('invest')
-  const betterOptionsForUser = document.querySelector('#betterInvestments')
-  const opitionsinp = whereInvest(Number(userInput.value)).compensatesMore
-  betterOptionsForUser.textContent = `
-    Melhores opções  que maximizam o retorno total para essa valor: ${opitionsinp}
-  `
+  if (!userInput.value || Number(userInput.value) < 50000) {
+    const min = document.querySelector('#betterInvestments')
+    min.textContent = 'Investimento mínimo: R$50.000,00'
+    viewInvest.textContent = 'R$1.000.000'
+    const { compensatesMore, purchasedInvestments } = whereInvest(1000000)
+    view(compensatesMore, purchasedInvestments)
+  } else {
+    const min = document.querySelector('#betterInvestments')
+    min.textContent = ''
+    const { compensatesMore, purchasedInvestments } = whereInvest(Number(userInput.value))
+    view(compensatesMore, purchasedInvestments)
+    viewInvest.textContent = `R$${userInput.value}`
+  }
 })
 
 const pythonCode = document.querySelector('#pythonCode')
 pythonCode.addEventListener('click', function () {
+  // eslint-disable-next-line no-undef
   location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.py'
 })
 
 const jsCode = document.querySelector('#jsCode')
 jsCode.addEventListener('click', function () {
+  // eslint-disable-next-line no-undef
   location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.js'
 })
 
