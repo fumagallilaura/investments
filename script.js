@@ -79,65 +79,65 @@ const isInvestmentSelected = (selectedsArray, compareArray, n1, n2) => {
 }
 
 // Lógica do service
-function wherInvest(inputValue) {
-let investment = Number(inputValue);
-let arrayCompare = [...resultMock];
-const purchasedInvestments = [];
-let index;
-let opitionCompare = '1';
+function whereInvest(inputValue) {
+  let investment = Number(inputValue);
+  let arrayCompare = [...resultMock];
+  const purchasedInvestments = [];
+  let index;
+  let opitionCompare = '1';
 
-const investment1 = resultMock[0];
-const investment5 = resultMock[4];
-const investment2 = resultMock[1];
-const investment4 = resultMock[4];
+  const investment1 = resultMock[0];
+  const investment5 = resultMock[4];
+  const investment2 = resultMock[1];
+  const investment4 = resultMock[4];
 
-while (investment > 0 && index !== -1) {
-  let numberCompare = Number(arrayCompare[0].custoDoInvestimento) - Number(arrayCompare[0].retornoEsperado);
-  for (let i =  1; i < arrayCompare.length; i += 1) {
-    const differenceExpensesEarned = arrayCompare[i].custoDoInvestimento - arrayCompare[i].retornoEsperado;
-    if (numberCompare > differenceExpensesEarned) {
-      index = i;
-      opitionCompare = arrayCompare[i].opcao;
-      numberCompare = differenceExpensesEarned;
+  while (investment > 0 && index !== -1) {
+    let numberCompare = Number(arrayCompare[0].custoDoInvestimento) - Number(arrayCompare[0].retornoEsperado);
+    for (let i =  1; i < arrayCompare.length; i += 1) {
+      const differenceExpensesEarned = arrayCompare[i].custoDoInvestimento - arrayCompare[i].retornoEsperado;
+      if (numberCompare > differenceExpensesEarned) {
+        index = i;
+        opitionCompare = arrayCompare[i].opcao;
+        numberCompare = differenceExpensesEarned;
+      }
     }
+    if (index === -1) break;
+    investment -= arrayCompare[index].custoDoInvestimento;
+    if (investment < 0) break;
+    purchasedInvestments.push(arrayCompare[index]);
+    arrayCompare.splice(index, 1);
+
+    for (let i = 0; i < arrayCompare.length; i += 1) {
+      if (Number(arrayCompare[i].custoDoInvestimento) > Number(investment)) {
+        arrayCompare.splice(i, 1);
+        i -= 1;
+      };
+    }
+
+    // if (purchasedInvestments.includes(investment1) && arrayCompare.includes(investment5)) {
+    //   const i = arrayCompare.indexOf(investment5);
+    //   arrayCompare.splice(i, 1);
+    // }
+    // Rafatorando:
+    arrayCompare = isInvestmentSelected(purchasedInvestments, arrayCompare, investment1, investment5) || arrayCompare;
+
+    // if (purchasedInvestments.includes(investment2) && arrayCompare.includes(investment4)) {
+    //   const i = arrayCompare.indexOf(investment4);
+    //   arrayCompare.splice(i, 1);
+    // }
+    // Rafatorando:
+    arrayCompare = isInvestmentSelected(purchasedInvestments, arrayCompare, investment2, investment4) || arrayCompare;
+
+    index = arrayCompare.length > 0 ? 0 : -1;
   }
-  if (index === -1) break;
-  investment -= arrayCompare[index].custoDoInvestimento;
-  if (investment < 0) break;
-  purchasedInvestments.push(arrayCompare[index]);
-  arrayCompare.splice(index, 1);
 
-  for (let i = 0; i < arrayCompare.length; i += 1) {
-    if (Number(arrayCompare[i].custoDoInvestimento) > Number(investment)) {
-      arrayCompare.splice(i, 1);
-      i -= 1;
-    };
+  const compensatesMore = [];
+  for (let i = 0; i < purchasedInvestments.length; i += 1) {
+    compensatesMore.push(purchasedInvestments[i].opcao);
   }
 
-  // if (purchasedInvestments.includes(investment1) && arrayCompare.includes(investment5)) {
-  //   const i = arrayCompare.indexOf(investment5);
-  //   arrayCompare.splice(i, 1);
-  // }
-  // Rafatorando:
-  arrayCompare = isInvestmentSelected(purchasedInvestments, arrayCompare, investment1, investment5) || arrayCompare;
-
-  // if (purchasedInvestments.includes(investment2) && arrayCompare.includes(investment4)) {
-  //   const i = arrayCompare.indexOf(investment4);
-  //   arrayCompare.splice(i, 1);
-  // }
-  // Rafatorando:
-  arrayCompare = isInvestmentSelected(purchasedInvestments, arrayCompare, investment2, investment4) || arrayCompare;
-
-  index = arrayCompare.length > 0 ? 0 : -1;
-}
-
-const compensatesMore = [];
-for (let i = 0; i < purchasedInvestments.length; i += 1) {
-  compensatesMore.push(purchasedInvestments[i].opcao);
-}
-
-// console.log(`Melhores opções: ${compensatesMore}`);
-// console.log('Investimentos: ', purchasedInvestments);
+  // console.log(`Melhores opções: ${compensatesMore}`);
+  // console.log('Investimentos: ', purchasedInvestments);
   return {compensatesMore, purchasedInvestments}
 }
 // Montando a tabela para visualização
@@ -157,14 +157,14 @@ tableBody.innerHTML = resultTable.join('')
 // Opções dinâmicas de investimento
 const userInput = document.getElementById('invest');
 const betterOptionsForUser = document.querySelector('#betterInvestments');
-const t = wherInvest(Number(userInput.value)).compensatesMore
+const t = whereInvest(Number(userInput.value)).compensatesMore
 betterOptionsForUser.textContent = `
   Melhores opções  que maximizam o retorno total para essa valor: ${t}
 `
 console.log(t)
 
 // Com R$1.000.000
-const { compensatesMore, purchasedInvestments } = wherInvest(1000000);
+const { compensatesMore, purchasedInvestments } = whereInvest(1000000);
 const betterOptions = document.getElementById('betterOptions')
 betterOptions.innerHTML = `
   Opções: ${compensatesMore.map((option) => option)}
@@ -182,7 +182,7 @@ calculate.addEventListener("click", () => {
   // Opções dinâmicas de investimento
   const userInput = document.getElementById('invest');
   const betterOptionsForUser = document.querySelector('#betterInvestments');
-  const opitionsinp = wherInvest(Number(userInput.value)).compensatesMore
+  const opitionsinp = whereInvest(Number(userInput.value)).compensatesMore
   betterOptionsForUser.textContent = `
     Melhores opções  que maximizam o retorno total para essa valor: ${opitionsinp}
   `
@@ -193,3 +193,5 @@ pythonCode.addEventListener('click', () =>  location.href = 'https://github.com/
 
 const jsCode = document.querySelector("#jsCode");
 pythonCode.addEventListener('click', () =>  location.href = 'https://github.com/fumagallilaura/investments/blob/main/script.js');
+
+module.exports = whereInvest;
